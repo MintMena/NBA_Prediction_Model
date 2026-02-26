@@ -1,3 +1,3 @@
 # NBA_Prediction_Model
-NBA Draft Prediction Model Project 
+This is NBA Draft prediction Model project
 -Mint Menakanit
