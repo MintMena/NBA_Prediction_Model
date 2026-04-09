@@ -25,14 +25,14 @@ model = XGBClassifier(
     colsample_bytree = 0.8, # fraction of features to use for
     scale_pos_weight = scale_pos_weight, # handle class imbalance
     eval_metric = 'logloss', # evaluation metric for early stopping
-    random_state = 67
+    random_state = 67,
 )
 
 model.fit(X_train, y_train)
 
 # Evaluate the model on the test set
 
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score, precision_score, recall_score, roc_auc_score
 
 y_pred = model.predict(X_test)
 y_pred_prob = model.predict_proba(X_test)[:, 1]

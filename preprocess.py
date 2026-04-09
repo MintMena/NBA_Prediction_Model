@@ -3,7 +3,7 @@ import pandas as pd
 # Load data
 
 ncaa = pd.read_csv('Data/ncaa_data.csv')
-ncaa.columns = ncaa.columns.str.strip()
+ncaa.columns = ncaa.columns.str.strip() 
 
 
 # Handling missing values and creating new features
@@ -26,6 +26,16 @@ ncaa['3PAr'] = ncaa['3PA'] / ncaa['FGA'].replace(0, 1)
 # Free-throw attempt rate: FT attempts relative to FG attempts
 ncaa['FTr']  = ncaa['FTA'] / ncaa['FGA'].replace(0, 1)
 
+# Assist-to-turnover ratio
+ncaa['AST_TOV'] = ncaa['APG'] / (ncaa['TOVPG'] + 0.1)
+
+# True shooting % — better efficiency measure than FG%
+ncaa['TS%'] = ncaa['PTS'] / (2 * (ncaa['FGA'] + 0.44 * ncaa['FTA']).replace(0, 1))
+
+# Points + assists per minute 
+ncaa['impact_per_min'] = (ncaa['PPG'] + ncaa['APG']) / (ncaa['MPG'] + 0.1)
+
+
 
 # Encoding categorical variables
 
@@ -41,7 +51,7 @@ ncaa['Class_enc'] = ncaa['Class'].map(class_map)
 
 # Selecting relevant features for modeling and target
 
-feature_cols = ['POS_enc', 'Class_enc', 'PPG', 'RPG', 'APG', 'SPG', 'BPG', 'TOVPG', 'MPG', 'GSPG', '3PAr', 'FTr']
+feature_cols = ['POS_enc', 'Class_enc', 'PPG', 'RPG', 'APG', 'SPG', 'BPG', 'TOVPG', 'MPG', 'GSPG', '3PAr', 'FTr', 'AST_TOV', 'TS%', 'impact_per_min']
 X = ncaa[feature_cols]
 y = ncaa['Drafted']
 
@@ -49,7 +59,7 @@ y = ncaa['Drafted']
 # Splitting the dataset into training and testing sets
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 67, stratify = y) 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y) 
 # random_state = 42 : ensures reproducibility, getting same split every time
 # stratify = y : tells sklearn to preserve original draft rate in both splits
 
@@ -63,4 +73,8 @@ test_df['Drafted']  = y_test
 train_df.to_csv('Data/train.csv', index = False)
 test_df.to_csv('Data/test.csv', index = False)
 
+print(f"Train size : {len(train_df)}")
+print(f"Test size  : {len(test_df)}")
+print(f"Draft rate (train): {y_train.mean():.3f}")
+print(f"Draft rate (test) : {y_test.mean():.3f}")
 print("Saved → Data/train.csv and Data/test.csv")
