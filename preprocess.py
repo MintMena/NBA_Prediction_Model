@@ -49,7 +49,7 @@ y = ncaa['Drafted']
 # Splitting the dataset into training and testing sets
 
 from sklearn.model_selection import train_test_split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 42, stratify = y) 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 67, stratify = y) 
 # random_state = 42 : ensures reproducibility, getting same split every time
 # stratify = y : tells sklearn to preserve original draft rate in both splits
 
