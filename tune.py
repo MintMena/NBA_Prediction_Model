@@ -81,6 +81,9 @@ plt.figure(figsize = (10, 6))
 plt.barh(list(importances.keys())[:15], list(importances.values())[:15], color = 'skyblue')
 plt.xlabel('Feature Importance (Weight)')
 plt.title('Top 15 Feature Importances from XGBoost')
-plt.gca().invert_yaxis() # highest importance at the top
+plt.gca().invert_yaxis()
 plt.tight_layout()
 plt.show()
+
+model_best.save_model('xgb_final.json')
+print("Model saved → xgb_final.json")
