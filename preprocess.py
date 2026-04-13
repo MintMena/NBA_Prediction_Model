@@ -29,7 +29,7 @@ ncaa['FTr']  = ncaa['FTA'] / ncaa['FGA'].replace(0, 1)
 # Assist-to-turnover ratio
 ncaa['AST_TOV'] = ncaa['APG'] / (ncaa['TOVPG'] + 0.1)
 
-# True shooting % — better efficiency measure than FG%
+# True shooting % — Formula player's efficiency at scoring, accounting for 3s and FTs
 ncaa['TS%'] = ncaa['PTS'] / (2 * (ncaa['FGA'] + 0.44 * ncaa['FTA']).replace(0, 1))
 
 # Points + assists per minute 
